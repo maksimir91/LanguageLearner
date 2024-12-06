@@ -60,7 +60,20 @@ class ViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
+        // Добавляем обработку нажатия
+        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+        
+        
+        
         return button
+    }
+    
+    // Добавляем обработчик
+    @objc private func buttonTapped(_ sender: UIButton) {
+        if sender.currentTitle == "Флэш-карточки" {
+            let flashcardsVC = FlashcardsViewController()
+            navigationController?.pushViewController(flashcardsVC, animated: true)
+        }
     }
     
 }

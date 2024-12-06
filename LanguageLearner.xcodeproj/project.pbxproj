@@ -13,6 +13,7 @@
 		E0E365A72D01B3CB008F5A8B /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E0E365A62D01B3CB008F5A8B /* Base */; };
 		E0E365A92D01B3CC008F5A8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0E365A82D01B3CC008F5A8B /* Assets.xcassets */; };
 		E0E365AC2D01B3CC008F5A8B /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E0E365AB2D01B3CC008F5A8B /* Base */; };
+		E0E365B42D0354E4008F5A8B /* FlashcardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E365B32D0354E4008F5A8B /* FlashcardsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		E0E365A82D01B3CC008F5A8B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0E365AB2D01B3CC008F5A8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E0E365AD2D01B3CC008F5A8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E0E365B32D0354E4008F5A8B /* FlashcardsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				E0E3659F2D01B3CB008F5A8B /* AppDelegate.swift */,
 				E0E365A12D01B3CB008F5A8B /* SceneDelegate.swift */,
 				E0E365A32D01B3CB008F5A8B /* ViewController.swift */,
+				E0E365B32D0354E4008F5A8B /* FlashcardsViewController.swift */,
 				E0E365A52D01B3CB008F5A8B /* Main.storyboard */,
 				E0E365A82D01B3CC008F5A8B /* Assets.xcassets */,
 				E0E365AA2D01B3CC008F5A8B /* LaunchScreen.storyboard */,
@@ -141,6 +144,7 @@
 				E0E365A42D01B3CB008F5A8B /* ViewController.swift in Sources */,
 				E0E365A02D01B3CB008F5A8B /* AppDelegate.swift in Sources */,
 				E0E365A22D01B3CB008F5A8B /* SceneDelegate.swift in Sources */,
+				E0E365B42D0354E4008F5A8B /* FlashcardsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
