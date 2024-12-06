@@ -9,11 +9,17 @@ import UIKit
 
 class FlashcardsViewController: UIViewController {
     
+    // MARK: - Properties
     // Массив слов для изучения
-    private let words = ["Apple", "Orange", "Banana", "Grape", "Cherry"]
+    private let wordsWithTranslations: [(englishWords: String, translations: String)] = [
+        ("Apple", "Яблоко"), ("Orange", "Апельсин"), ("Banana", "Банан"), ("Grape", "Виноград"), ("Cherry", "Вишня")
+    ]
     
     // Индекс текущей карточки
     private var currentIndex = 0
+    
+    // Переменная для отслеживания состояния перевода (флаг)
+    private var showingTranslation = false
     
     // Метка для отображения текста
     private let wordLabel: UILabel = {
@@ -31,6 +37,9 @@ class FlashcardsViewController: UIViewController {
         showCurrentWord() // отображаем первую карточку
     }
     
+    // MARK: - Функции
+    
+    // Отображение UI
     private func setupUIFlashcards() {
         // Цвет фона
         view.backgroundColor = .white
@@ -59,47 +68,68 @@ class FlashcardsViewController: UIViewController {
             wordLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             wordLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            nextButton.topAnchor.constraint(equalTo: wordLabel.bottomAnchor, constant: 20),
             nextButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             nextButton.widthAnchor.constraint(equalToConstant: 150),
             nextButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         
-        // Пример элемента интерфейса
-//        let label = UILabel()
-//        label.text = "Тут будут карточки!"
-//        label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
-//        label.textAlignment = .center
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        // Добавляем вью на экран
-//        view.addSubview(label)
-//        
-//        // Констрейнты
-//        NSLayoutConstraint.activate([
-//            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            label.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-//        ])
+        // Кнопка показать перевод
+        let toggleTranslationButton = UIButton(type: .system)
+        toggleTranslationButton.setTitle("Показать перевод", for: .normal)
+        toggleTranslationButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        toggleTranslationButton.backgroundColor = .systemGreen
+        toggleTranslationButton.setTitleColor(.white, for: .normal)
+        toggleTranslationButton.layer.cornerRadius = 10
+        toggleTranslationButton.translatesAutoresizingMaskIntoConstraints = false
+        toggleTranslationButton.addTarget(self, action: #selector(toggleTranslation), for: .touchUpInside)
+        
+        view.addSubview(toggleTranslationButton)
+        
+        // Констрейнты для кнопки показать перевод
+        NSLayoutConstraint.activate([
+            toggleTranslationButton.topAnchor.constraint(equalTo: wordLabel.bottomAnchor, constant: 20),
+            toggleTranslationButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            toggleTranslationButton.widthAnchor.constraint(equalToConstant: 200),
+            toggleTranslationButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            nextButton.topAnchor.constraint(equalTo: toggleTranslationButton.bottomAnchor, constant: 20)
+        ])
     }
     
     // Отображение текущего слова
     private func showCurrentWord() {
-        if currentIndex < words.count {
-            wordLabel.text = words[currentIndex]
+        if currentIndex < wordsWithTranslations.count {
+            showingTranslation = false
+            wordLabel.text = wordsWithTranslations[currentIndex].englishWords
         } else {
             wordLabel.text = "Вы изучили все слова!"
         }
     }
     
+    
+    // MARK: - Обработчики нажатия на кнопки
+    
     // Обработчик кнопки "Следующая"
     @objc private func nextButtonTapped() {
-        if currentIndex < words.count - 1 {
+        if currentIndex < wordsWithTranslations.count - 1 {
             currentIndex += 1
             showCurrentWord()
         } else {
             // Если слов больше нет, сбрасываем индекс
             currentIndex = 0
             showCurrentWord()
+        }
+    }
+    
+    // Обработчик кнопки Показать перевод
+    @objc private func toggleTranslation() {
+        // Переключаем флаг
+        showingTranslation.toggle()
+        // Обновляем текст на карточке
+        if showingTranslation {
+            wordLabel.text = wordsWithTranslations[currentIndex].translations
+        } else {
+            wordLabel.text = wordsWithTranslations[currentIndex].englishWords
         }
     }
 }

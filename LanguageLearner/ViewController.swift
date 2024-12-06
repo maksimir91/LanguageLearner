@@ -8,12 +8,12 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
-
+    
     private func setupUI() {
         // Устанавливаем цвет фона
         view.backgroundColor = .white
@@ -35,7 +35,7 @@ class ViewController: UIViewController {
         stackView.axis = .vertical
         stackView.spacing = 20
         stackView.alignment = .center
-     
+        
         // Добавляем стек на экран
         view.addSubview(stackView)
         
@@ -63,8 +63,6 @@ class ViewController: UIViewController {
         // Добавляем обработку нажатия
         button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         
-        
-        
         return button
     }
     
@@ -75,6 +73,5 @@ class ViewController: UIViewController {
             navigationController?.pushViewController(flashcardsVC, animated: true)
         }
     }
-    
 }
 
