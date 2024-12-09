@@ -6,14 +6,13 @@
 //
 
 import UIKit
+import CoreData
 
 class FlashcardsViewController: UIViewController {
     
     // MARK: - Properties
     // Массив слов для изучения
-    private let wordsWithTranslations: [(englishWords: String, translations: String)] = [
-        ("Apple", "Яблоко"), ("Orange", "Апельсин"), ("Banana", "Банан"), ("Grape", "Виноград"), ("Cherry", "Вишня")
-    ]
+    private var wordsWithTranslations: [(englishWords: String, translations: String)] = []
     
     // Индекс текущей карточки
     private var currentIndex = 0
@@ -42,6 +41,7 @@ class FlashcardsViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .white
         addGradientBackground() // добавляем градиент
         setupUIFlashcards() // отображаем UI
+        loadWordsFromDatabase() // загрузка из базы данных
         showCurrentWord() // отображаем первую карточку
     }
     
@@ -79,8 +79,6 @@ class FlashcardsViewController: UIViewController {
             wordLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             wordLabel.widthAnchor.constraint(equalToConstant: 300),
             wordLabel.heightAnchor.constraint(equalToConstant: 250),
-           // wordLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-           // wordLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
             nextButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             nextButton.widthAnchor.constraint(equalToConstant: 250),
@@ -120,9 +118,7 @@ class FlashcardsViewController: UIViewController {
             wordLabel.text = "Вы изучили все слова!"
             return
         }
-        // Цвета карточек
-        //let colors: [UIColor] = [.systemRed, .systemBlue, .systemGreen, .systemYellow, .systemOrange]
-        // let currentColor = colors[currentIndex % colors.count] // выбираем цвет по индексу
+        // Цвета карточек - случайные
         let currentColor = UIColor(red: CGFloat.random(in: 0.3...1), green: CGFloat.random(in: 0.3...1), blue: CGFloat.random(in: 0.3...1), alpha: 1.0)
         
         // Анимация исчезновения
@@ -152,6 +148,64 @@ class FlashcardsViewController: UIViewController {
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
+    // Метод добавления новых слов
+    func addWord(english: String, translation: String) {
+        loadWordsFromDatabase()
+        showCurrentWord()
+    }
+    
+    // Метод для дефолтных слов в базе данных, если она пуста
+    private func setupDefaultWords(in context: NSManagedObjectContext) {
+        let defaultWords = [
+            ("Apple", "Яблоко"), ("Orange", "Апельсин"), ("Banana", "Банан"), ("Grape", "Виноград"), ("Cherry", "Вишня"),("CatPoopHead", "Коська-какаська")
+        ]
+        
+        for word in defaultWords {
+            let newWord = NSEntityDescription.insertNewObject(forEntityName: "Word", into: context)
+            newWord.setValue(word.0, forKey: "englishWord")
+            newWord.setValue(word.1, forKey: "translation")
+        }
+        
+        do {
+            try context.save()
+            print("Данные по умолчанию успешно добавлены.")
+            wordsWithTranslations = defaultWords
+        } catch {
+            print("Ошибка добавления данных по умолчанию: \(error)")
+        }
+    }
+    
+    // Метод загрузки слов из базы данных
+    private func loadWordsFromDatabase() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Word")
+        
+        do {
+            let fetchedWords = try context.fetch(fetchRequest)
+  
+            // Если база данных пустая, используем данные по умолчанию
+            if fetchedWords.isEmpty {
+                setupDefaultWords(in: context)
+            } else {
+                // загружаем слова из базы данных
+                wordsWithTranslations = fetchedWords.compactMap { word in
+                    guard let englishWord = word.value(forKey: "englishWord") as? String,
+                          let translation = word.value(forKey: "translation") as? String else {
+                        return nil
+                    }
+                    return (englishWord, translation)
+                }
+                wordsWithTranslations.shuffle()
+            }
+        } catch {
+            print("Ошибка загрузки слов: \(error)")
+        }
+    }
+    
+    
+    
     // MARK: - Обработчики нажатия на кнопки
     
     // Обработчик кнопки "Следующая"
@@ -161,6 +215,7 @@ class FlashcardsViewController: UIViewController {
         } else {
             // Если слов больше нет, сбрасываем индекс
             currentIndex = 0
+            wordsWithTranslations.shuffle()
         }
         showCurrentWord()
     }

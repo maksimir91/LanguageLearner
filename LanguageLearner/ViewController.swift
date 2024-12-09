@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewController: UIViewController {
     
@@ -72,22 +73,12 @@ class ViewController: UIViewController {
         configuration.titleAlignment = .center
         
         let button = UIButton(configuration: configuration,primaryAction: nil)
-//        button.setTitle(title, for: .normal)
-//        button.setImage(UIImage(named: imageName), for: .normal)
-//        button.tintColor = .white
-//        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-//        button.backgroundColor = .systemTeal
-//        button.setTitleColor(.white, for: .normal)
-//        button.layer.cornerRadius = 10
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowOpacity = 0.2
         button.layer.shadowOffset = CGSize(width: 2, height: 2)
         button.layer.shadowRadius = 5
         button.translatesAutoresizingMaskIntoConstraints = false
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        // Добавляем обработку нажатия
-        //button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         button.addAction(UIAction {[weak self] _ in
             self?.buttonTapped(withTitle: title)}, for: .touchUpInside)
         
@@ -111,22 +102,36 @@ class ViewController: UIViewController {
         }
     }
     
-    // Добавляем обработчик
-//    @objc private func buttonTapped(_ sender: UIButton) {
-//        if sender.currentTitle == "Флэш-карточки" {
-//            let flashcardsVC = FlashcardsViewController()
-//            flashcardsVC.modalPresentationStyle = .fullScreen
-//            flashcardsVC.modalTransitionStyle = .crossDissolve // плавная смена экрана
-//            present(flashcardsVC, animated: true)
-//        }
-//        // здесь будут обработчики других кнопок меню
-//    }
+    // Метод для добавления нового слова
+    private func addNewWord(englishWord: String, translation: String) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let newWord = NSEntityDescription.insertNewObject(forEntityName: "Word", into: context)
+        newWord.setValue(englishWord, forKey: "englishWord")
+        newWord.setValue(translation, forKey: "translation")
+        
+        do {
+            try context.save()
+            print("Слово сохранено: \(englishWord) - \(translation)")
+        } catch {
+            print("Ошибка сохранения: \(error)")
+        }
+    }
+
     private func buttonTapped(withTitle title: String) {
         if title == "Флэш-карточки" {
             let flashcardsVc = FlashcardsViewController()
             navigationController?.pushViewController(flashcardsVc, animated: true)
         } else if title == "Добавить слова" {
             // переход
+            let addWordVC = AddWordViewController()
+            
+            // передаем замыкание для сохранения новых слов
+            addWordVC.onSave = { [weak self] englishWord, translation in
+                self?.addNewWord(englishWord: englishWord, translation: translation)
+            }
+            navigationController?.pushViewController(addWordVC, animated: true)
         } else if title == "Тесты" {
             //переход
         }
