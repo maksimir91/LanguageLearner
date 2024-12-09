@@ -6,12 +6,22 @@
 //
 
 import UIKit
+import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
+    // MARK: - Core Data Stack
+    lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "LanguageLearnerModel")
+        container.loadPersistentStores{ description, error in
+            if let error = error {
+                fatalError("Ошибка загрузки Core Data: \(error)")
+            }
+        }
+        return container
+    }()
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         return true
