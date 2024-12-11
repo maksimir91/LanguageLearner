@@ -33,7 +33,7 @@ class AddWordViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+ //       button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside) 
         return button
     }()
     
@@ -45,6 +45,8 @@ class AddWordViewController: UIViewController {
         super.viewDidLoad()
         setupUIAddWord()
         addGradientBackground()
+        
+        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
     // MARK: - Setup UI

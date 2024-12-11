@@ -134,6 +134,8 @@ class ViewController: UIViewController {
             navigationController?.pushViewController(addWordVC, animated: true)
         } else if title == "Тесты" {
             //переход
+            let testVC = TestViewController()
+            navigationController?.pushViewController(testVC, animated: true)
         }
     }
 }
