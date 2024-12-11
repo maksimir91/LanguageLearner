@@ -36,6 +36,7 @@ class FlashcardsViewController: UIViewController {
         return label
     }()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.tintColor = .white
@@ -110,6 +111,24 @@ class FlashcardsViewController: UIViewController {
             
             nextButton.topAnchor.constraint(equalTo: toggleTranslationButton.bottomAnchor, constant: 20)
         ])
+
+        let showWordsButton = UIButton(type: .system)
+        showWordsButton.setTitle("Список слов", for: .normal)
+        showWordsButton.setTitleColor(.white, for: .normal)
+        showWordsButton.backgroundColor = .systemPurple
+        showWordsButton.layer.cornerRadius = 10
+        showWordsButton.addTarget(self, action: #selector(showWordList), for: .touchUpInside)
+        showWordsButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(showWordsButton)
+        
+        NSLayoutConstraint.activate([
+            showWordsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            showWordsButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            showWordsButton.heightAnchor.constraint(equalToConstant: 50),
+            showWordsButton.widthAnchor.constraint(equalToConstant: 250)
+        ])
+    
     }
     
     // Отображение текущего слова
@@ -234,6 +253,12 @@ class FlashcardsViewController: UIViewController {
             // меняем текст кнопки
             toggleTranslationButton.setTitle("Показать перевод", for: .normal)
         }
+    }
+    
+    @objc private func showWordList() {
+        let wordListVC = WordListViewController()
+        let navController = UINavigationController(rootViewController: wordListVC)
+        present(navController, animated: true, completion: nil)
     }
     
 }
