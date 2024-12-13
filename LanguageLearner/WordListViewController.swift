@@ -21,16 +21,6 @@ class WordListViewController: UIViewController, UITableViewDelegate, UITableView
         loadWordsFromDatabase()
     }
     
-    // Метод для добавления градиента
-    private func addGradientBackground() {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.systemBlue.cgColor, UIColor.systemPurple.cgColor]
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
-        gradientLayer.frame = view.bounds
-        view.layer.insertSublayer(gradientLayer, at: 0)
-    }
-    
     // MARK: - Setup UI
     
     private func setupTableView() {
@@ -50,27 +40,12 @@ class WordListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     // MARK: - Data Loading
-    
     private func loadWordsFromDatabase() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        let context = appDelegate.persistentContainer.viewContext
-        
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Word")
-        
-        do {
-            let fetchedWords = try context.fetch(fetchRequest)
-            wordsWithTranslations = fetchedWords.compactMap { word in
-                guard let englishWord = word.value(forKey: "englishWord") as? String,
-                let translation = word.value(forKey: "translation") as? String else {
-                    return nil
-                }
-                return (englishWord, translation)
-            }
-            tableView.reloadData()
-        } catch {
-            print("Ошибка загрузки слов: \(error)")
-        }
+        let fetchedWords = CoreDataManager.shared.fetchWords()
+        wordsWithTranslations = fetchedWords.map { ($0.englishWord ?? "", $0.translation ?? "") }
+        tableView.reloadData()
     }
+    
     // MARK: - TableView DataSource Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return wordsWithTranslations.count

@@ -157,16 +157,6 @@ class FlashcardsViewController: UIViewController {
         
     }
     
-    // Метод для добавления градиента
-    private func addGradientBackground() {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.systemBlue.cgColor, UIColor.systemPurple.cgColor]
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
-        gradientLayer.frame = view.bounds
-        view.layer.insertSublayer(gradientLayer, at: 0)
-    }
-    
     // Метод добавления новых слов
     func addWord(english: String, translation: String) {
         loadWordsFromDatabase()
@@ -196,33 +186,15 @@ class FlashcardsViewController: UIViewController {
     
     // Метод загрузки слов из базы данных
     private func loadWordsFromDatabase() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        let context = appDelegate.persistentContainer.viewContext
+        let fetchedWords = CoreDataManager.shared.fetchWords()
         
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Word")
-        
-        do {
-            let fetchedWords = try context.fetch(fetchRequest)
-  
-            // Если база данных пустая, используем данные по умолчанию
-            if fetchedWords.isEmpty {
-                setupDefaultWords(in: context)
-            } else {
-                // загружаем слова из базы данных
-                wordsWithTranslations = fetchedWords.compactMap { word in
-                    guard let englishWord = word.value(forKey: "englishWord") as? String,
-                          let translation = word.value(forKey: "translation") as? String else {
-                        return nil
-                    }
-                    return (englishWord, translation)
-                }
-                wordsWithTranslations.shuffle()
-            }
-        } catch {
-            print("Ошибка загрузки слов: \(error)")
+        if fetchedWords.isEmpty {
+            setupDefaultWords(in: CoreDataManager.shared.persistentContainer.viewContext)
+        } else {
+            wordsWithTranslations = fetchedWords.map { ($0.englishWord ?? "", $0.translation ?? "") }
+            wordsWithTranslations.shuffle()
         }
     }
-    
     
     
     // MARK: - Обработчики нажатия на кнопки

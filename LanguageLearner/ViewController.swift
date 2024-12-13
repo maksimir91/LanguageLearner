@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        addGradientBackgroundMain()
+        addGradientBackground()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,16 +85,6 @@ class ViewController: UIViewController {
         return button
     }
     
-    // Метод для добавления градиента - ДУБЛИРУЕТСЯ(DRY)
-    private func addGradientBackgroundMain() {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.systemBlue.cgColor, UIColor.systemPurple.cgColor]
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
-        gradientLayer.frame = view.bounds
-        view.layer.insertSublayer(gradientLayer, at: 0)
-    }
-    
     private func animatedContentAppearence() {
         view.subviews.forEach { $0.alpha = 0 } // Начинаем с прозрачности
         UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseInOut]) {
@@ -104,19 +94,8 @@ class ViewController: UIViewController {
     
     // Метод для добавления нового слова
     private func addNewWord(englishWord: String, translation: String) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        let context = appDelegate.persistentContainer.viewContext
-        
-        let newWord = NSEntityDescription.insertNewObject(forEntityName: "Word", into: context)
-        newWord.setValue(englishWord, forKey: "englishWord")
-        newWord.setValue(translation, forKey: "translation")
-        
-        do {
-            try context.save()
-            print("Слово сохранено: \(englishWord) - \(translation)")
-        } catch {
-            print("Ошибка сохранения: \(error)")
-        }
+        CoreDataManager.shared.addWord(englishWord: englishWord, translation: translation)
+        print("Слово сохранено: \(englishWord) - \(translation)")
     }
 
     private func buttonTapped(withTitle title: String) {
