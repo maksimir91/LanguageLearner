@@ -29,7 +29,7 @@ class TestViewController: UIViewController {
     private let checkButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Проверить", for: .normal)
-        button.backgroundColor = .systemOrange
+        button.backgroundColor = .systemTeal
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -57,7 +57,7 @@ class TestViewController: UIViewController {
         setupUI()
         loadWords()
         showNextWord()
-        addGradientBackgroundMain()
+        addGradientBackground()
         
         checkButton.addTarget(self, action: #selector(checkTranslation), for: .touchUpInside)
     }
@@ -86,34 +86,12 @@ class TestViewController: UIViewController {
         ])
     }
     
-    // Метод для добавления градиента - ДУБЛИРУЕТСЯ(DRY)
-    private func addGradientBackgroundMain() {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.systemBlue.cgColor, UIColor.systemPurple.cgColor]
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
-        gradientLayer.frame = view.bounds
-        view.layer.insertSublayer(gradientLayer, at: 0)
-    }
-    
     private func loadWords() {
-        // Получаем доступ к Core Data контексту
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        let context = appDelegate.persistentContainer.viewContext
+        let fetchedWords = CoreDataManager.shared.fetchWords()
+        words = fetchedWords.map { ($0.englishWord ?? "", $0.translation ?? "") }
         
-        let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
-        
-        do {
-            let fetchedWords = try context.fetch(fetchRequest)
-            words = fetchedWords.map { ($0.englishWord ?? "", $0.translation ?? "") }
-            
-            if words.isEmpty {
-                wordLabel.text = "Слова не найдены!"
-                checkButton.isEnabled = false
-            }
-        } catch {
-            print("Ошибка загрузки данных из Core Data: \(error)")
-            wordLabel.text = "Ошибка загрузки данных"
+        if words.isEmpty {
+            wordLabel.text = "Слова не найдены!"
             checkButton.isEnabled = false
         }
     }

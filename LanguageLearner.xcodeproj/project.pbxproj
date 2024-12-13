@@ -19,6 +19,8 @@
 		E0E365BC2D07025D008F5A8B /* LanguageLearnerModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E0E365BA2D07025D008F5A8B /* LanguageLearnerModel.xcdatamodeld */; };
 		E0E365BE2D074946008F5A8B /* WordListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E365BD2D074946008F5A8B /* WordListViewController.swift */; };
 		E0E365C02D09B48D008F5A8B /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E365BF2D09B48D008F5A8B /* TestViewController.swift */; };
+		E0E365C22D0C531E008F5A8B /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E365C12D0C531E008F5A8B /* UIViewController + Extension.swift */; };
+		E0E365C42D0C5575008F5A8B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E365C32D0C5575008F5A8B /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		E0E365BB2D07025D008F5A8B /* LanguageLearnerModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LanguageLearnerModel.xcdatamodel; sourceTree = "<group>"; };
 		E0E365BD2D074946008F5A8B /* WordListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordListViewController.swift; sourceTree = "<group>"; };
 		E0E365BF2D09B48D008F5A8B /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		E0E365C12D0C531E008F5A8B /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
+		E0E365C32D0C5575008F5A8B /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +80,7 @@
 				E0E365B82D06F102008F5A8B /* AddWordViewController.swift */,
 				E0E365BD2D074946008F5A8B /* WordListViewController.swift */,
 				E0E365BF2D09B48D008F5A8B /* TestViewController.swift */,
+				E0E365C32D0C5575008F5A8B /* CoreDataManager.swift */,
 				E0E365B52D061A2E008F5A8B /* Extensions */,
 				E0E365A52D01B3CB008F5A8B /* Main.storyboard */,
 				E0E365A82D01B3CC008F5A8B /* Assets.xcassets */,
@@ -89,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				E0E365B62D061A66008F5A8B /* UIImage + Extension.swift */,
+				E0E365C12D0C531E008F5A8B /* UIViewController + Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -170,9 +176,11 @@
 				E0E365A22D01B3CB008F5A8B /* SceneDelegate.swift in Sources */,
 				E0E365B72D061A66008F5A8B /* UIImage + Extension.swift in Sources */,
 				E0E365B42D0354E4008F5A8B /* FlashcardsViewController.swift in Sources */,
+				E0E365C22D0C531E008F5A8B /* UIViewController + Extension.swift in Sources */,
 				E0E365BE2D074946008F5A8B /* WordListViewController.swift in Sources */,
 				E0E365C02D09B48D008F5A8B /* TestViewController.swift in Sources */,
 				E0E365BC2D07025D008F5A8B /* LanguageLearnerModel.xcdatamodeld in Sources */,
+				E0E365C42D0C5575008F5A8B /* CoreDataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
